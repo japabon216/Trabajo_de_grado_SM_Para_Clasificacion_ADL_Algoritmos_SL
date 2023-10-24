@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sistema Móvil Jaida</title>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic" />
+
+    <!-- CSS Reset -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" />
+
+    <!-- Milligram CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css" />
+
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+            background-color: #B156EF;
+        }
+
+
+        .titulo {
+            color: white;
+            text-align: center;
+        }
+
+        .logo {
+            margin: auto;
+        }
+
+        .contenedor_general {
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+
+        button {
+            display: block;
+            width: 100%;
+            background-color: white;
+            color: #1414A0;
+            border-radius: 24px;
+        }
+
+
+        .footer_mensaje {
+            color: white;
+            text-align: center;
+            text-decoration: underline;
+        }
+
+        /* Estilos para el mensaje de carga */
+        #loading-message {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            visibility: hidden;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+
+
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #FFF;
+            border-bottom-color: #B156EF;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+     
+    </style>
+
+
+    <script>
+        function mostrarConfirmacion() {
+
+            // Mostrar el mensaje de carga
+            var loadingMessage = document.getElementById('loading-message');
+            loadingMessage.style.visibility="visible";
+
+            if (confirm("¿Deseas extraer las características?")) {
+                // Si el usuario hace clic en "Sí"
+                if (confirm("¿Deseas subir un archivo CSV?\n\nEl archivo debe tener las columnas Activity, X_Acc, Y_Acc, Z_Acc, X_Gyro, Y_Gyro, Z_Gyro para poder procesarse.")) {
+                    var input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = '.csv';
+                    input.onchange = function () {
+                        var file = input.files[0];
+                        if (file) {
+                            var formData = new FormData();
+                            formData.append('file', file);
+
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('POST', '/subir_archivo_csv', true);
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4 && xhr.status === 200) {
+                                    // Ocultar el mensaje de carga
+                                    loadingMessage.style.display = 'none';
+
+                                    if (confirm("¿Deseas predecir una actividad al azar de tu dataset?")) {
+                                        window.location.href = '/predecir_actividad';
+                                    }
+                                }
+                            };
+                            xhr.send(formData);
+                        }
+                    };
+                    input.click();
+                }
+            } else {
+                // Si el usuario hace clic en "No, deseo continuar"
+                alert("Vamos bien");
+            }
+        }
+
+        function generarDataExistente() {
+            // Mostrar el mensaje de carga
+            var loadingMessage = document.getElementById('loading-message');
+            loadingMessage.style.display = 'block';
+
+            // Hacer una solicitud para generar datos con el dataset existente
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/generar_data_existente', true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Ocultar el mensaje de carga
+                    loadingMessage.style.display = 'none';
+
+                    if (confirm("¿Deseas predecir una actividad al azar del dataset existente?")) {
+                        window.location.href = '/predecir_actividad';
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="container contenedor_general">
+
+
+        <h1 class="titulo">Bienvenido a Jaida!</h1>
+
+
+        <img class="logo" src="https://i.ibb.co/b59s40f/Jaida-1.png" alt="">
+
+        <div class="container">
+
+            <form method="POST" action="javascript:void(0);">
+                <button type="button" onclick="mostrarConfirmacion()">Subir Dataset</button>
+                <button type="button" onclick="generarDataExistente()">Generar actividad con Dataset</button>
+            </form>
+        </div>
+
+        <p class="footer_mensaje">Primera versión del sistema móvil Jaida</p>
+    </div>
+
+    <!-- Mensaje de carga -->
+    <div id="loading-message">
+        <span class="loader"></span>
+        <h4 class="label_cargando">Cargando...</h4>
+    </div>
+
+</body>
+
+</html>

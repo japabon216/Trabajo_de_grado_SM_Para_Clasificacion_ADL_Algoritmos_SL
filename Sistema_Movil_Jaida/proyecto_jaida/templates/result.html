@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultado de Predicción</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic" />
+
+    <!-- CSS Reset -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" />
+
+    <!-- Milligram CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css" />
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+            background-color: #B156EF;
+        }
+
+
+        .contenedor_general{
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .logo{
+            display: block;
+            width: 150px;
+            height: 150px;
+            margin: auto;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            background-color: white;
+            color: #1414A0;
+        }
+
+        .label_actividad_predecir,
+        .label_actividad_predecida{
+            font-size: 28px;
+            color: white;
+        }
+
+        .texto_predecir,
+        .texto_predecida{
+            font-size: 28px;
+            color: black;
+            font-weight: bold;
+            
+        }
+
+        .boton_home,button{
+            display: block;
+            background: white;
+            color: #1414A0;
+            border-radius: 24px;
+        }
+
+
+    </style>
+
+</head>
+<body>
+
+    <div class="contenedor_general">
+
+        <div class="container">
+            <img class="logo" src="https://i.ibb.co/b59s40f/Jaida-1.png" alt="">
+        </div>
+
+        <div class="container">
+            <p class="label_actividad_predecir">Actividad A Predecir</p>
+            <p class="texto_predecir">{{ actividad_a_predecir }}</p>
+
+            <p class="label_actividad_predecida">Actividad Predecida</p>
+            <p class="texto_predecida">{{ actividad_predecida }}</p>
+        </div>
+
+        <div class="container">
+    
+            <form method="GET" action="/predecir_actividad">
+                <button type="submit">Probar Más Datos Al Azar</button>
+            </form>
+
+            <a class="boton_home button" href="/">Volver a Inicio</a>
+        </div>
+
+    </div>
+
+  
+
+
+
+ 
+</body>
+</html>
